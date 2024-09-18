@@ -10,7 +10,7 @@ port = 8000
 callsigns={}
 
 def generateCallsign():
-	alpha="BCDFGHJKLMNPQRSTVWXZ"
+	alpha="ABCDFGHJKLMNPRSTVWXZ"
 	callsign=""
 	for i in range(4):
 		callsign+=alpha[random.randint(0, len(alpha)-1)]
@@ -19,6 +19,7 @@ def generateCallsign():
 def handle_client(client_socket, addr):
 	try:
 		client_socket.send(f"ASSIGNED CALLSIGN: {callsigns[addr]}".encode("utf-8"))
+		print(f"{addr[0]}:{addr[1]} assigned callsign {callsigns[addr]}")
 		while True:
 			request = client_socket.recv(1024).decode("utf-8")
 			if request.lower() == "/close":
@@ -31,7 +32,7 @@ def handle_client(client_socket, addr):
 		print(f"Client handling error: {e}")
 	finally:
 		client_socket.close()
-		print(f"Closed connection to {addr[0]}:{addr[1]}")
+		print(f"{callsigns[addr]} closed connection")
 
 def start_server(ip, prt):
     try:
@@ -57,4 +58,5 @@ def start_server(ip, prt):
     	print(f"Error: {e}")
     	server.close()
     	
-start_server(server_ip, port)
+start_server(server_ip, port)
+
