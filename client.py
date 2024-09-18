@@ -1,10 +1,10 @@
 import socket
 
 
-def run_client(server_ip, server_port):
+def run_client(server_ip, server_port, client_details=("127.0.0.1",40001)):
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     #client = socket.socket(("127.0.0.1",40001), socket.SOCK_STREAM)
-    client.bind(("127.0.0.1",40001))
+    client.bind(client_details)
     client.connect((server_ip, server_port))
     
     #message loop
@@ -26,4 +26,5 @@ def run_client(server_ip, server_port):
     print("Connection closed")
     
 run_client("127.0.0.1", 8000)
-
+#run_client("127.0.0.1", 8000, ("127.0.0.1", 40002))
+#                              ^If not specified, defaulted to ("127.0.0.1", 40001)
