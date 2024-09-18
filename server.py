@@ -22,7 +22,7 @@ def generateCallsign():
 def handle_client(client_socket, addr):
     try:
         client_socket.send(f"ASSIGNED CALLSIGN: {callsigns[addr]}".encode("utf-8"))
-        print(f"{addr[0]}:{addr[1]} callsign set as {callsigns[addr]}")
+        #print(f"{addr[0]}:{addr[1]} callsign set as {callsigns[addr]}")
         while True:
             request = client_socket.recv(1024).decode("utf-8")
             if request.lower() == "/close":
@@ -48,15 +48,18 @@ def start_server(ip, prt):
     
         while True:
             client_socket, addr = server.accept()
-            print(f"Connection accepted from {addr[0]}:{addr[1]}")
-            
+            print(f"Connection accepted from {addr[0]}:{addr[1]}",end=" ")
+
             if addr not in callsigns:
+                print("(Unregistered client)")
                 newCallsign=generateCallsign()
                 while newCallsign in callsigns:
                     newCallsign=generateCallsign()
                 
                 callsigns[addr]=newCallsign
-            
+                print(f"{addr[0]}:{addr[1]} assigned callsign {callsigns[addr]}")
+            else:
+                print(f"{callsigns[addr]}")
             thread = threading.Thread(target=handle_client, args=(client_socket, addr,))
             thread.start()
     except Exception as e:

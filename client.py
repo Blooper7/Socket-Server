@@ -25,5 +25,5 @@ def run_client(server_ip, server_port, client_details=("127.0.0.1",40001)):
     print("Connection closed")
     
 run_client("127.0.0.1", 8000)
-#run_client("127.0.0.1", 8000, ("127.0.0.1", 40002))
+#run_client("127.0.0.1", 8000, ("127.0.0.1", 41110))
 #                              ^If not specified, defaulted to ("127.0.0.1", 40001)
