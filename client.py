@@ -1,6 +1,5 @@
 import socket
 
-
 def run_client(server_ip, server_port, client_details=("127.0.0.1",40001)):
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     #client = socket.socket(("127.0.0.1",40001), socket.SOCK_STREAM)
