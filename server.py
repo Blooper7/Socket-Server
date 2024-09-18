@@ -42,7 +42,6 @@ def handle_client(client_socket, addr):
     finally:
         client_socket.close()
         print(f"{callsigns[addr]} closed connection")
-        print(callsigns)
 
 def start_server(ip, prt):
     try:
