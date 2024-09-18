@@ -10,16 +10,19 @@ port = 8000
 callsigns={}
 
 def generateCallsign():
-    alpha="ABCDFGHJKLMNPRSTVWXZ"
+    alpha="ABCDFGHJKLMNPRSTVXZ"
     callsign=""
     for i in range(4):
-        callsign+=alpha[random.randint(0, len(alpha)-1)]
+        char=alpha[random.randint(0, len(alpha)-1)]
+        while char in callsign:
+            char=alpha[random.randint(0, len(alpha)-1)]
+        callsign+=char
     return callsign
 
 def handle_client(client_socket, addr):
     try:
         client_socket.send(f"ASSIGNED CALLSIGN: {callsigns[addr]}".encode("utf-8"))
-        print(f"{addr[0]}:{addr[1]} assigned callsign {callsigns[addr]}")
+        print(f"{addr[0]}:{addr[1]} callsign set as {callsigns[addr]}")
         while True:
             request = client_socket.recv(1024).decode("utf-8")
             if request.lower() == "/close":
@@ -47,11 +50,12 @@ def start_server(ip, prt):
             client_socket, addr = server.accept()
             print(f"Connection accepted from {addr[0]}:{addr[1]}")
             
-            newCallsign=generateCallsign()
-            while newCallsign in callsigns:
+            if addr not in callsigns:
                 newCallsign=generateCallsign()
-            
-            callsigns[addr]=newCallsign
+                while newCallsign in callsigns:
+                    newCallsign=generateCallsign()
+                
+                callsigns[addr]=newCallsign
             
             thread = threading.Thread(target=handle_client, args=(client_socket, addr,))
             thread.start()
