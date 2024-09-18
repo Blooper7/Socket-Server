@@ -9,13 +9,18 @@ port = 8000
 
 callsigns={}
 
+def presetCallsigns():
+    f=open("./callsigns.txt","r")
+    for i in f:
+        line=i.split(" ")
+        key=(line[0],int(line[1]))
+        callsigns[key]=line[2].strip()
+
 def generateCallsign():
     alpha="ABCDFGHJKLMNPRSTVXZ"
     callsign=""
     for i in range(4):
         char=alpha[random.randint(0, len(alpha)-1)]
-        while char in callsign:
-            char=alpha[random.randint(0, len(alpha)-1)]
         callsign+=char
     return callsign
 
@@ -37,6 +42,7 @@ def handle_client(client_socket, addr):
     finally:
         client_socket.close()
         print(f"{callsigns[addr]} closed connection")
+        print(callsigns)
 
 def start_server(ip, prt):
     try:
@@ -57,14 +63,14 @@ def start_server(ip, prt):
                     newCallsign=generateCallsign()
                 
                 callsigns[addr]=newCallsign
-                print(f"{addr[0]}:{addr[1]} assigned callsign {callsigns[addr]}")
+                print(f"Assigned callsign {callsigns[addr]} to {addr[0]}:{addr[1]}")
             else:
-                print(f"{callsigns[addr]}")
+                print(f"(Callsign: {callsigns[addr]})")
             thread = threading.Thread(target=handle_client, args=(client_socket, addr,))
             thread.start()
     except Exception as e:
         print(f"Error: {e}")
         server.close()
-        
-start_server(server_ip, port)
 
+presetCallsigns()
+start_server(server_ip, port)
