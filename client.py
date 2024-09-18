@@ -19,9 +19,10 @@ def run_client(server_ip, server_port):
         if response.lower() == "closed":
             break
         if msg == "/close":
-        	break
+            break
         
     client.close()
     print("Connection closed")
     
-run_client("127.0.0.1", 8000)
+run_client("127.0.0.1", 8000)
+
