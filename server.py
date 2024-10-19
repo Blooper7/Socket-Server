@@ -17,7 +17,7 @@ def presetCallsigns():
         callsigns[key]=line[2].strip()
 
 def generateCallsign():
-    alpha="ABCDFGHJKLMNPRSTVXZ"
+    alpha="ABCDEFGHIJKLMNOPQRSTUVWXZ"
     callsign=""
     for i in range(4):
         char=alpha[random.randint(0, len(alpha)-1)]
